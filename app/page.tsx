@@ -7,5 +7,9 @@ export default async function Home() {
 
   console.log(result);
 
-  return <main>{result[0].title}</main>;
+  return (
+    <main>
+      <h1 style={{ fontSize: "24px", color: "black" }}>{result[0].title}</h1>
+    </main>
+  );
 }
