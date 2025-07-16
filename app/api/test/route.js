@@ -1,6 +1,12 @@
-// app/api/test/route.ts (또는 .js)
-export async function GET(request, response) {
-  console.log("서버에서 호출됨");
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+
+  const a = searchParams.get("a");
+  const b = searchParams.get("b");
+
+  console.log("a:", a);
+  console.log("b:", b);
+
   return new Response(JSON.stringify("처리완료"), {
     status: 200,
     headers: { "Content-Type": "application/json" },

@@ -1,22 +1,19 @@
 import Link from "next/link";
 import { connectDB } from "../utils/database";
+import ListItem from "./ListItem";
 
 export default async function List() {
   let db = (await connectDB).db("nextJS");
   let result = await db.collection("post").find().toArray();
+  console.log(result);
+
+  result = result.map((post) => ({
+    ...post,
+    _id: post._id.toString(), // ObjectId를 문자열로 변환
+  }));
   return (
     <div className="list-bg">
-      {result.map((a, i) => (
-        <div className="list-item" key={i}>
-          <Link href={"/detail/" + result[i]._id}>
-            <h4>{a.title}</h4>
-          </Link>
-          <Link href={"/edit/" + result[i]._id} className="list-btn">
-            ✏️
-          </Link>
-          <p>1월 1일</p>
-        </div>
-      ))}
+      <ListItem result={result} />
     </div>
   );
 }
