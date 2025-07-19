@@ -1,6 +1,10 @@
 import { connectDB } from "@/app/utils/database";
+import { authOptions } from "../../../lib/authOptions";
+import { getServerSession } from "next-auth";
 
 export async function POST(request) {
+  const session = await getServerSession(authOptions); // ✅ authOptions 꼭 전달해야 함
+
   console.log("request:", request);
   const formData = await request.formData();
   const title = formData.get("title");
@@ -14,7 +18,14 @@ export async function POST(request) {
 
   const client = await connectDB; // ✅ 함수 아님, Promise
   const db = client.db("nextJS");
-  await db.collection("post").insertOne({ title, content });
+  const newPost = {
+    title,
+    content,
+    author: session?.user?.email,
+    createdAt: new Date(),
+  };
+
+  await db.collection("post").insertOne(newPost);
 
   return new Response(null, {
     status: 302,
