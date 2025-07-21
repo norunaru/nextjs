@@ -23,6 +23,7 @@ export default async function RootLayout({
           </Link>
           <Link href="/write">Write</Link>
           <Link href="/list">List</Link>
+          {session ? null : <Link href="/register">Register</Link>}
           {session ? <LogoutBtn /> : <LoginBtn />} {/* ✅ 정확한 조건 */}
         </div>
         {children}
